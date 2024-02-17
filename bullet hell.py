@@ -8,7 +8,7 @@ from sys import exit
 pygame.init()
 
 #creating window/display surface ((width, height))
-screen = pygame.display.set_mode((800, 400))
+screen = pygame.display.set_mode((800, 600))
 
 #give game a title
 pygame.display.set_caption("Bullet hell")
@@ -23,7 +23,7 @@ player = pygame.Surface((20, 20))
 player.fill("red")
 
 #making a hitbox(rectangle) for the player
-player_rect = player.get_rect(midbottom = (400, 200)).scale_by(0.5)
+player_rect = player.get_rect(midbottom = (400, 300)).scale_by(0.5)
 
 #making bullets
 p = 0
@@ -40,7 +40,7 @@ class bullet:
         else:
             self.direction = 5
         if self.direction == 5:
-            self.rect = self.surface.get_rect(midbottom =(random.randint(0, 800),random.randint(400, 600))).scale_by(0.75)
+            self.rect = self.surface.get_rect(midbottom =(random.randint(0, 800),random.randint(600,800))).scale_by(0.75)
         else:
             self.surface = pygame.transform.rotate(self.surface, 180)
             self.rect = self.surface.get_rect(midbottom =(random.randint(0, 800),random.randint(-200, 0))).scale_by(0.75)
@@ -55,7 +55,7 @@ class bullet:
                 self.rect.left -= 10 * math.cos(math.radians(90 - abs(self.angle)))
 
             if self.rect.bottom <= -50:
-                self.rect.bottom = random.randint(400, 600)
+                self.rect.bottom = random.randint(600, 800)
                 self.rect.left = random.randint(0, 800)
         else:
             self.rect.bottom += 5 * math.sin(math.radians(90 - abs(self.angle)))
@@ -63,7 +63,7 @@ class bullet:
                 self.rect.left -= 10 * math.cos(math.radians(90 - abs(self.angle)))
             else:
                 self.rect.left += 10 * math.cos(math.radians(90 - abs(self.angle)))
-            if self.rect.bottom >= 450:
+            if self.rect.bottom >= 650:
                 self.rect.bottom = random.randint(-200, 0)
                 self.rect.left = random.randint(0, 800)
         screen.blit(self.surface, self.rect)
@@ -138,14 +138,14 @@ while True:
     else:
         ymomentum += 0.1
         
-    if player_rect.bottom >= 395:
+    if player_rect.bottom >= 595:
         ymomentum = -3
     if player_rect.bottom <= 5:
         ymomentum = 3
     if player_rect.right >= 795:
         xmomentum = -3
     if player_rect.left <= 5:
-        xmomentum = +3
+        xmomentum = 3
 
     #if keys[pygame.K_RSHIFT]:
     #    if xmomentum > 0:
@@ -163,4 +163,3 @@ while True:
     #if loop is per frame then the speed of the game is based on fps which can vary
     frames += 1
     clock.tick(60)
-
