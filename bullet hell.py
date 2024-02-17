@@ -69,7 +69,8 @@ class bullet:
         screen.blit(self.surface, self.rect)
 
     def check(self):
-        if self.rect.colliderect(player_rect):
+        global dodge
+        if self.rect.colliderect(player_rect) and dodge == 0:
             for i in range(50):
                 print("Your score was", len(bullets))
             pygame.quit()
@@ -79,6 +80,17 @@ bullets.append(bullet())
 frames = 0
 xmomentum = 0
 ymomentum = 0
+d_frame = -300
+
+def dodger():
+    global d_frame, dodge
+    if keys[pygame.K_RETURN] and frames > d_frame + 300:
+        dodge = 1
+        d_frame = frames
+        player.fill("green")
+    if frames > d_frame + 120:
+        dodge = 0
+        player.fill("red")
 
 #keeps code going
 #game loop
@@ -104,17 +116,15 @@ while True:
                     
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        #player_rect.bottom -= 10
         ymomentum -= 0.3
     if keys[pygame.K_s]:
-        #player_rect.bottom += 10
         ymomentum += 0.3
     if keys[pygame.K_a]:
-        #player_rect.left -= 10
         xmomentum -= 0.3
     if keys[pygame.K_d]:
-        #player_rect.left += 10
         xmomentum += 0.3
+        
+    dodger()
         
     player_rect.bottom += ymomentum
     player_rect.left += xmomentum
@@ -136,6 +146,16 @@ while True:
         xmomentum = -3
     if player_rect.left <= 5:
         xmomentum = +3
+
+    #if keys[pygame.K_RSHIFT]:
+    #    if xmomentum > 0:
+    #        xmomentum = 10
+    #    else:
+    #        xmomentum = -10
+    #    if ymomentum > 0:
+    #        ymomentum = 10
+    #    else:
+    #        ymomentum = -10
     
     #draw all elements
     #update evrything
@@ -143,3 +163,4 @@ while True:
     #if loop is per frame then the speed of the game is based on fps which can vary
     frames += 1
     clock.tick(60)
+
